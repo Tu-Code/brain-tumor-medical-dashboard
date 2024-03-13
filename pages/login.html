@@ -36,7 +36,7 @@
         <div class="card ">
             <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="../assets/images/logo.png" alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
             <div class="card-body">
-                <form>
+                <form id="loginForm">
                     <div class="form-group">
                         <input class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
                     </div>
@@ -48,20 +48,57 @@
             </div>
             <div class="card-footer bg-white p-0  ">
                 <div class="card-footer-item card-footer-item-bordered">
-                    <a href="#" class="footer-link">Create An Account</a></div>
+                    <a href="./sign-up.html" class="footer-link">Create An Account</a></div>
                 <div class="card-footer-item card-footer-item-bordered">
                     <a href="#" class="footer-link">Forgot Password</a>
                 </div>
             </div>
         </div>
     </div>
-  
+
     <!-- ============================================================== -->
     <!-- end login page  -->
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="./api.js"></script>
+    <script>
+
+        // Function to handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+
+            event.preventDefault(); // Prevent default form submission
+    
+            // Gather input values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            try {
+                // Call the login function with the input values
+                const loginResponse = await login(username, password);
+                console.log('Login response:', loginResponse);
+
+                if (loginResponse) {
+                    // Redirect to index.html
+                    localStorage.setItem('username', username);
+                    window.location.href = './index.html';
+
+                }
+                else {
+                    alert("Invalid Login Details!")
+                }
+    
+    
+            } catch (error) {
+                console.error('Error:', error);
+                // Add your logic here to display error messages to the user
+            }
+
+        });
+    </script>
+
 </body>
  
 </html>
