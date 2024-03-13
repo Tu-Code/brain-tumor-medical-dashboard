@@ -31,11 +31,7 @@
                 </button>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
-                        <li class="nav-item">
-                            <div id="custom-search" class="top-search-bar">
-                                <input class="form-control" type="text" placeholder="Search..">
-                            </div>
-                        </li>
+
                         <li class="nav-item dropdown nav-user">
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
@@ -44,9 +40,7 @@
                                         John Abraham</h5>
                                     <span class="status"></span><span class="ml-2">Available</span>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" id="logoutBtn" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -76,7 +70,7 @@
                                 <a class="nav-link" href="/index.html">Dashboard</a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="pages/form-elements.html">Upload Scan</a>
+                                <a class="nav-link" href="./form-elements.html">Upload Scan</a>
                             </li>
                         </ul>
                     </div>
@@ -149,31 +143,34 @@
                                 <div class="card">
                                     <h5 class="card-header">Basic Form</h5>
                                     <div class="card-body">
-                                        <form>
+                                        <form id="patientForm">
                                             <div class="form-group">
                                                 <label for="inputText3" class="col-form-label">Patient Name</label>
-                                                <input id="inputText3" type="text" class="form-control">
+                                                <input id="inputText3" required type="text" class="form-control">
                                             </div>
                                             <h5>Gender</h5>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" name="radio-inline" checked="" class="custom-control-input"><span class="custom-control-label">Male</span>
+                                                <input type="radio" required name="gender" value="male" checked class="custom-control-input">
+                                                <span class="custom-control-label">Male</span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" name="radio-inline" class="custom-control-input"><span class="custom-control-label">Female</span>
+                                                <input type="radio" required name="gender" value="female" class="custom-control-input">
+                                                <span class="custom-control-label">Female</span>
                                             </label>
                                             <div class="form-group">
                                                 <label for="inputEmail">Email address</label>
-                                                <input id="inputEmail" type="email" placeholder="name@example.com" class="form-control">
+                                                <input id="inputEmail" required type="email" placeholder="name@example.com" class="form-control">
                                                 <p>We'll never share your email with anyone else.</p>
                                             </div>
                                             <div class="custom-file mb-3">
-                                                <input type="file" class="custom-file-input" id="customFile">
+                                                <input type="file" required class="custom-file-input" id="customFile">
                                                 <label class="custom-file-label" for="customFile">MRI Scan Image Input</label>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlTextarea1">Note</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                <textarea required class="form-control" id="exampleFormControlTextarea1" rows="3">No Notes</textarea>
                                             </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
                                     </div>
                                 </div>
@@ -214,11 +211,34 @@
     <!-- end main wrapper -->
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
     <script src="../assets/libs/js/main-js.js"></script>
     <script src="../assets/vendor/inputmask/js/jquery.inputmask.bundle.js"></script>
+    <script src="./api.js"></script>
+
+    <script>
+        // Op page load, if 'username' not in localstorage, redirect to login page
+
+        if (!localStorage.getItem('username')) {
+            window.location.href = './login.html';
+        }
+
+        // Logout function
+        document.querySelector('#logoutBtn').addEventListener('click', function(e) {
+
+            e.preventDefault();
+            localStorage.removeItem('username');
+            window.location.href = './login.html';
+
+        });
+
+    </script>
+
     <script>
     $(function(e) {
         "use strict";
@@ -252,6 +272,54 @@
                 }
             })
     });
+    </script>
+
+    <script>
+        // Function to handle form submission
+        document.getElementById('patientForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Gather form data
+            const name = document.getElementById('inputText3').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const email = document.getElementById('inputEmail').value;
+            const fileInput = document.getElementById('customFile');
+            const note = document.getElementById('exampleFormControlTextarea1').value;
+
+            // Create FormData object to send file
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('gender', gender);
+            formData.append('email', email);
+            formData.append('note', note);
+            formData.append('file', fileInput.files[0]);
+
+            try {
+
+                // Call the predict function to get prediction
+                const predictResponse = await predict(fileInput.files[0]);
+                console.log('Prediction:', predictResponse);
+
+                formData.append('result', predictResponse);
+
+                formData.delete('file');
+
+                // Call the registerResults function to register patient results
+                const registerResponse = await registerResults({
+                    name,
+                    gender,
+                    email,
+                    notes: note,
+                    result: predictResponse
+                });
+                console.log('Patient registered:', registerResponse);
+
+                alert("Result registered Successfully!!!");
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
     </script>
 </body>
  

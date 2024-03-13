@@ -12,19 +12,19 @@
     <link rel="stylesheet" href="../assets/libs/css/style.css">
     <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
     <style>
-    html,
-    body {
-        height: 100%;
-    }
+        html,
+        body {
+            height: 100%;
+        }
 
-    body {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        align-items: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
-    }
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -35,7 +35,7 @@
     <!-- ============================================================== -->
     <!-- signup form  -->
     <!-- ============================================================== -->
-    <form class="splash-container">
+    <form id="registrationForm" class="splash-container">
         <div class="card">
             <div class="card-header">
                 <h3 class="mb-1">Registrations Form</h3>
@@ -43,16 +43,16 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <input class="form-control form-control-lg" type="text" name="nick" required="" placeholder="Username" autocomplete="off">
+                    <input class="form-control form-control-lg" type="text" id="username" name="nick" required="" placeholder="Username" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input class="form-control form-control-lg" type="email" name="email" required="" placeholder="E-mail" autocomplete="off">
+                    <input class="form-control form-control-lg" type="email" id="email" name="email" required="" placeholder="E-mail" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input class="form-control form-control-lg" id="pass1" type="password" required="" placeholder="Password">
+                    <input class="form-control form-control-lg" id="password" type="password" required="" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <input class="form-control form-control-lg" required="" placeholder="Confirm">
+                    <input class="form-control form-control-lg" id="confirmPassword" required="" placeholder="Confirm">
                 </div>
                 <div class="form-group pt-2">
                     <button class="btn btn-block btn-primary" type="submit">Register My Account</button>
@@ -64,10 +64,48 @@
                 </div>
             </div>
             <div class="card-footer bg-white">
-                <p>Already registered? <a href="#" class="text-secondary">Login Here.</a></p>
+                <p>Already registered? <a href="./login.html" class="text-secondary">Login Here.</a></p>
             </div>
         </div>
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./api.js"></script>
+
+    <script>
+        // Function to handle form submission
+        document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+    
+            // Gather input values
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+    
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+    
+            try {
+                // Call the registerResults function with the input values
+
+                const registrationResponse = await signup(username, email, password);
+                console.log('Registration response:', registrationResponse);
+    
+                // Add your logic here to redirect or perform other actions after successful registration
+
+                // Redirect to index.html
+                window.location.href = './login.html';
+    
+            } catch (error) {
+                console.error('Error:', error);
+                // Add your logic here to display error messages to the user
+            }
+        });
+    </script>
 </body>
 
  
