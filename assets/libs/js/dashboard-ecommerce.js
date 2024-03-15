@@ -9,15 +9,17 @@
         new Chartist.Bar('.ct-chart-product', {
             labels: ['Q1', 'Q2', 'Q3', 'Q4'],
             series: [
-                [800000, 1200000, 1400000, 1300000],
-                [200000, 400000, 500000, 300000],
-                [100000, 200000, 400000, 600000]
+                [3, 2, 3, 4],
+                [5, 1, 6, 3],
+                // [100000, 200000, 400000, 600000]
             ]
         }, {
             stackBars: true,
             axisY: {
                 labelInterpolationFnc: function(value) {
-                    return (value / 1000) + 'k';
+                    // value = Math.round(value)
+                    console.log(value)
+                    return (value * 100);
                 }
             }
         }).on('draw', function(data) {
@@ -199,24 +201,24 @@
     // ============================================================== 
     // Total Revenue
     // ============================================================== 
-    Morris.Area({
-        element: 'morris_totalrevenue',
-        behaveLikeLine: true,
-        data: [
-            { x: '2016 Q1', y: 0, },
-            { x: '2016 Q2', y: 7500, },
-            { x: '2017 Q3', y: 15000, },
-            { x: '2017 Q4', y: 22500, },
-            { x: '2024 Q5', y: 30000, },
-            { x: '2024 Q6', y: 40000, }
-        ],
-        xkey: 'x',
-        ykeys: ['y'],
-        labels: ['Y'],
-        lineColors: ['#5969ff'],
-        resize: true
+    // Morris.Area({
+    //     element: 'morris_totalrevenue',
+    //     behaveLikeLine: true,
+    //     data: [
+    //         { x: '2016 Q1', y: 0, },
+    //         { x: '2016 Q2', y: 7500, },
+    //         { x: '2017 Q3', y: 15000, },
+    //         { x: '2017 Q4', y: 22500, },
+    //         { x: '2024 Q5', y: 30000, },
+    //         { x: '2024 Q6', y: 40000, }
+    //     ],
+    //     xkey: 'x',
+    //     ykeys: ['y'],
+    //     labels: ['Y'],
+    //     lineColors: ['#5969ff'],
+    //     resize: true
 
-    });
+    // });
 
 
 
