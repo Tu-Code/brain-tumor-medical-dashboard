@@ -90,19 +90,14 @@
             }
     
             try {
-                // Call the registerResults function with the input values
 
                 const registrationResponse = await signup(username, email, password);
                 console.log('Registration response:', registrationResponse);
     
-                // Add your logic here to redirect or perform other actions after successful registration
-
-                // Redirect to index.html
                 window.location.href = './login.html';
     
             } catch (error) {
                 console.error('Error:', error);
-                // Add your logic here to display error messages to the user
             }
         });
     </script>

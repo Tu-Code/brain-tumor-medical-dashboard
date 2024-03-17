@@ -129,6 +129,7 @@
                                                         <th class="border-0">#</th>
                                                         <th class="border-0">Patient Name</th>
                                                         <th class="border-0">Gender</th>
+                                                        <th class="border-0">Age</th>
                                                         <th class="border-0">Notes</th>
                                                         <th class="border-0">Prediction</th>
                                                     </tr>
@@ -285,6 +286,10 @@
 
                     cell = document.createElement('td');
                     cell.innerHTML = res[i].gender;
+                    row.appendChild(cell);
+
+                    cell = document.createElement('td');
+                    cell.innerHTML = res[i].age;
                     row.appendChild(cell);
 
                     cell = document.createElement('td');

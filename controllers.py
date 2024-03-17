@@ -1,8 +1,12 @@
 from pymongo import MongoClient
+import os
 
+username = os.environ.get('MONGODB_USERNAME')
+password = os.environ.get('MONGODB_PASSWORD')
 
-client = MongoClient('mongodb+srv://sarah:Puffalump123@cluster0.6kmuw7y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+connection_string = f'mongodb+srv://{username}:{password}@cluster0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
+client = MongoClient(connection_string)
 
 db = client['sarah-brain-tumor-detector']
 

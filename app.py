@@ -40,9 +40,10 @@ class Patient(BaseModel):
 
     name: str
     gender: str
+    age: int
     email: str
     notes: str
-    
+
     result: str = Field(default="Pending...")
 
 

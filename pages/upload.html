@@ -157,6 +157,10 @@
                                                 <span class="custom-control-label">Female</span>
                                             </label>
                                             <div class="form-group">
+                                                <label for="inputAge" class="col-form-label">Patient Age</label>
+                                                <input id="inputAge" required type="number" class="form-control">
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="inputEmail">Email address</label>
                                                 <input id="inputEmail" required type="email" placeholder="name@example.com" class="form-control">
                                                 <p>We'll never share your email with anyone else.</p>
@@ -191,13 +195,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                             Copyright © 2024 BTS Classifier. All rights reserved. Dashboard by <a href="https://Group 1.com/wp/">Group 1</a>.
                         </div>
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            <div class="text-md-right footer-links d-none d-sm-block">
-                                <a href="javascript: void(0);">About</a>
-                                <a href="javascript: void(0);">Support</a>
-                                <a href="javascript: void(0);">Contact Us</a>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -281,6 +279,7 @@
             // Gather form data
             const name = document.getElementById('inputText3').value;
             const gender = document.querySelector('input[name="gender"]:checked').value;
+            const age = document.querySelector('inputAge').value;
             const email = document.getElementById('inputEmail').value;
             const fileInput = document.getElementById('customFile');
             const note = document.getElementById('exampleFormControlTextarea1').value;
@@ -289,6 +288,7 @@
             const formData = new FormData();
             formData.append('name', name);
             formData.append('gender', gender);
+            formData.append('age', age);
             formData.append('email', email);
             formData.append('note', note);
             formData.append('file', fileInput.files[0]);
